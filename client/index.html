@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Music RecommeNDer</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="styles/styles.css">
+    </head>
+    <body>
+        <script src="scripts/three.js"></script>
+        <script src="scripts/stats.min.js"></script>
+        <script src="scripts/background.js"></script>
+        <script src="scripts/main.js"></script>
+        
+        <div id="overlay">
+            <p id="logo">Music RecommeNDer</p>
+            <div id="wrapper1" style="text-align: center;">
+                <div id="search" style="display: inline-block; padding-bottom: 20px;">
+                    <input type="text" class="inline" id="bar" placeholder="What are you looking for?" style="width:300px;height:20px;">
+                    <form class="inline">
+                        <select id="drop">
+                            <option value="title">Search By...</option>
+                            <option value="title">Title</option>
+                            <option value="artist">Artist</option>
+                        </select>
+                    </form>
+                    <input type="button" class="inline" id="go" value="SEARCH" style=" width:80px;height:400px;" onclick="performSearch()">
+                </div>
+            </div>
+            
+            <div id="wrapper2" style="text-align: center">
+                <div id="result">
+                    <div class="inline">
+                            <p id="res" style ="text-align: left; font-size: 25px; color: #555;">Results</p>
+                            <div id="display" style="height:140px;width:350px; text-align: left; overflow: auto;font:16px"></div>
+                    </div>
+                    <div class="inline" style="float: right;">
+                        <div id="lyrics" class="inline" style="padding-top: 20px; padding-bottom: 20px;height:175px;width:325px;font:16px Serif;overflow: auto; display: inline-block; text-align: left"></div>
+                    </div>
+                </div>
+                <div id="buffer"></div>
+                <div id="recommendations">
+                    <p id="rec" style="text-align: left; font-size: 25px; color: #555;">Recommendations</p>
+                    <div style="height:140px;width:700px; overflow: auto">
+                        <p id="rec1" style="text-align: left; font-size: 16px; color: #4863A0;"></p>
+                        <p id="rec2" style="text-align: left; font-size: 16px; color: #4863A0;"></p>
+                        <p id="rec3" style="text-align: left; font-size: 16px; color: #4863A0;"></p>
+                        <p id="rec4" style="text-align: left; font-size: 16px; color: #4863A0;"></p>
+                        <p id="rec5" style="text-align: left; font-size: 16px; color: #4863A0;"></p>
+                        <p id="rec6" style="text-align: left; font-size: 16px; color: #4863A0;"></p>
+                        <p id="rec7" style="text-align: left; font-size: 16px; color: #4863A0;"></p>
+                        <p id="rec8" style="text-align: left; font-size: 16px; color: #4863A0;"></p>
+                        <p id="rec9" style="text-align: left; font-size: 16px; color: #4863A0;"></p>
+                        <p id="rec10" style="text-align: left; font-size: 16px; color: #4863A0;"></p>
+                    </div>
+                </div>
+            </div>
+            <div id="buttons" style="padding-top: 5px; padding-right: 15px; padding-left: 15px;">
+                <input type="button" class="inline" id="resetButton" value="Reset Database" style="float:left; width:110px; height:400px;" onclick="reset()">
+                <input type="button" class="inline" id="addButton" value="Add Song" style=" width:80px;height:400px;float: right;" onclick="addSong()">
+                <input type="button" class="inline" id="deleteButton" value="Delete Song" style=" width:80px;height:400px;float: right;" onclick="deleteSong()">
+            </div>
+            
+            <div id="deletePopUp" class="modal">
+                <div class="modal-content">
+                    <div class="model-header" style="font-size:20px; text-align: center; background-color: #ade6bb; color:#4863A0;">
+                        <p>Delete a Song</p>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="deleteBar" placeholder="Title of Song You'd Like to Delete" style="width:300px;height:20px;">
+                        <input type="button" id="closeDelete" value="ENTER" onclick="closePopUpDelete()" style="width:80px;height:20px; color:#4863A0; float: right">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="addPopUp" class="modal">
+                <div class="modal-content">
+                    <div class="model-header" style="font-size:20px; text-align: center; background-color: #ade6bb; color:#4863A0;">
+                        <p>Add a Song</p>
+                    </div>
+                    <div class="modal-body">
+                        <div style="text-align: center;">
+                            <input type="text" class="inline" id="addBarTitle" placeholder="Title of Song You'd Like to Add" style="width:200px;height:20px;text-align: center;">
+                                <input type="text" class="inline" id="addBarYear" placeholder="Year of Song You'd Like to Add" style="width:200px;height:20px;text-align: center;">
+                        </div>
+                        <div style="text-align: center;">
+                            <input type="text" class="inline" id="addBarArtist" placeholder="Artist of Song You'd Like to Add" style="width:200px;height:20px;text-align: center;">
+                                <input type="text" class="inline" id="addBarGenre" placeholder="Genre of Song You'd Like to Add" style="width:200px;height:20px;text-align: center;">
+                        </div>
+                        <div style="text-align: center;">
+                            <input type="text" class="inline" id="addBarLyrics" placeholder="Lyrics of Song You'd Like to Add" style="width:200px;height:20px;overflow: auto;text-align: center;">
+                        </div>
+                        <input type="button" id="closeDelete" value="ENTER" onclick="closePopUpAdd()" style="width:80px;height:20px; color:#4863A0; float: right;">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </body>
+</html>
