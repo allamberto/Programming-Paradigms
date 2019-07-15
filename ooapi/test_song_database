@@ -1,0 +1,80 @@
+from _song_database import _song_database
+import unittest
+
+class TestSongDatabase(unittest.TestCase):
+        """unit tests for song database api"""
+
+        #@classmethod
+        #def setUpClass(self):
+        sdb = _song_database()
+
+        def reset_data(self):
+                "reset data is required because we cannot promise an order of test case execution"
+                self.sdb.reset_database()
+                self.sdb.load_database_info('./songData.json')
+
+        def test_get_song_info(self):
+                self.reset_data()
+                song = self.sdb.get_song_info('galway-girl')
+                self.assertEquals(song[0], 'galway-girl')
+                self.assertEquals(song[1], 2011)
+                self.assertEquals(song[2], 'celtic-thunder')
+                self.assertEquals(song[3], 'Pop')
+
+        def test_get_song_info_null(self):
+                self.reset_data()
+                song = self.sdb.get_song_info('viva la vida')
+                self.assertEquals(song, None)
+
+        def test_get_artist_songs(self):
+                self.reset_data()
+                artist = self.sdb.get_artist_songs('celtic-thunder')
+                self.assertEquals(artist[0], 'Pop')
+                self.assertEquals(len(artist[1]), 171)
+
+        def test_get_artist_songs_null(self):
+                self.reset_data()
+                artist = self.sdb.get_song_info('coldplay')
+                self.assertEquals(artist, None)
+
+        def test_recommend_similar_songs(self):
+                self.reset_data()
+                recommendations = self.sdb.recommend_similar_songs('galway-girl')
+                self.assertEquals(len(recommendations), 10)
+                song = self.sdb.get_song_info(recommendations.pop())
+                self.assertEquals(song[3], 'Pop')
+
+        def test_recommend_similar_artists(self):
+                self.reset_data()
+                recommendations = self.sdb.recommend_similar_artists('celtic-thunder')
+                self.assertEquals(len(recommendations), 5)
+                artist = self.sdb.get_artist_songs(recommendations.pop())
+                self.assertEquals(artist[0], 'Pop')
+
+        def test_add_song(self):
+                self.reset_data()
+                newSong = "{\"song\": \"viva la vida\", \"year\": 2005, \"artist\": \"coldplay\", \"genre\": \"Pop\", \"lyrics\": \"sweeping the city streets\"}"
+                self.sdb.add_song(newSong)
+                song = self.sdb.get_song_info('viva la vida')
+                self.assertEquals(song[0], 'viva la vida')
+                self.assertEquals(song[1], 2005)
+                self.assertEquals(song[2], 'coldplay')
+                self.assertEquals(song[3], 'Pop')
+                self.assertEquals(song[4], 'sweeping the city streets')
+
+                artist = self.sdb.get_artist_songs('coldplay')
+                self.assertEquals(artist[0], 'Pop')
+                self.assertEquals(artist[1][0], 'viva la vida')
+
+        def test_delete_song(self):
+                self.reset_data()
+                self.sdb.delete_song('galway-girl')
+                song = self.sdb.get_song_info('galway-girl')
+                self.assertEquals(song, None)
+
+                artist = self.sdb.get_artist_songs('celtic-thunder')
+                assert 'galway-girl' not in artist[1]
+
+if __name__ == "__main__":
+    unittest.main()
+
